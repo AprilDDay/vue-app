@@ -16,18 +16,35 @@
                 <label for="password1">password</label> 
                 <input type="password" placeholder="*****" id="password1"/>
             </div>
-            <button class="button">log in</button>
+            <button @click="login()" class="button">log in</button>
             <div class="extras">
                 <a>forgot password</a>  
                 <a>create an account</a>
-            </div> <!-- end forgot pw -->
+            </div> <!-- end forgot pw create account -->
         </form>
     </section>
     </div>
 </template>
 
 <script>
+
     export default{
+        methods: {
+            login(){
+                this.$store.dispatch('login', {
+                    email: this.loginForm.email,
+                    password: this.loginForm.password
+                })
+            }
+        },
+        data() {
+            return {
+                loginForm: {
+                    email: '',
+                    password: ''
+                }
+            }
+        }
 
     }
 </script>
