@@ -19,7 +19,7 @@
             </div>
             <button @click="signup()" class="button">sign up</button>
             <div class="extras">
-                <a>Back to Log in </a>                
+                <a @click="toggleForm()">Back to Log in </a>                
             </div>
             <div>
             </div>
@@ -45,9 +45,16 @@
             </div>
             <button @click="login()" class="button">log in</button>
             <div class="extras">
-                <a>forgot password</a>  
-                <a>create an account</a>
-            </div> <!-- end forgot pw create account -->
+                <a>forgot password</a>
+            </div>  
+            <div class="extras">
+                <form v-if="showLoginForm" @submit.prevent>
+                    <a @click="toggleForm()">create an account</a>
+                </form><!-- end of create an account extra -->
+                <form v-else @submit.prevent>
+                    <a @click="toggleForm()">back to log in</a>
+                </form>
+            </div> <!-- end forgot extras -->
         </form>
     </section>
     </div>
