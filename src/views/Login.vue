@@ -32,7 +32,7 @@
         <h1>Vuegram</h1>
         <p>Welcome to the <a href="https://savvyapps.com" target="_blank">Savvy Apps</a> sample social web app </p>
     </div>
-    <div class="col12">
+    <div :class="{ 'signup-form': !showLoginForm }" class="col12">
         <form @submit.prevent>
             <h1>welcome back</h1>
             <div>
@@ -77,6 +77,10 @@
                     name: this.signupForm.name,
                     title: this.signupForm.title
                 })
+            },
+            //not sure if this goes here 
+            toggleForm() {
+                this.showLoginForm = !this.showLoginForm
             }
         },
         data() {
@@ -90,7 +94,9 @@
                     title: '',
                     email: '',
                     password: ''
-                }
+                },
+                //not sure if this makes sense here perhaps it should go somewhere else
+                showLoginForm: true 
             }
         }
 
