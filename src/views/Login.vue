@@ -45,7 +45,7 @@
             </div>
             <button @click="login()" class="button">log in</button>
             <div class="extras">
-                <a>forgot password</a>
+                <a @click="togglePasswordReset()">forgot password</a>
             </div>  
             <div class="extras">
                 <form v-if="showLoginForm" @submit.prevent>
@@ -77,10 +77,13 @@
                     name: this.signupForm.name,
                     title: this.signupForm.title
                 })
-            },
+            },//end signup()
             //not sure if this goes here 
             toggleForm() {
                 this.showLoginForm = !this.showLoginForm
+            },
+            togglePasswordReset(){
+                this.showPasswordReset = !this.showPasswordReset
             }
         },
         data() {
@@ -96,7 +99,8 @@
                     password: ''
                 },
                 //not sure if this makes sense here perhaps it should go somewhere else
-                showLoginForm: true 
+                showLoginForm: true,
+                showPasswordReset: false 
             }
         }
 

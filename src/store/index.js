@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import * as fb from '../firebase'
 
 
 //need to put action handlers
