@@ -26,7 +26,9 @@
         </form>
     </div>
 
+<!-- maybe start of template is here -->
     <div id="login">
+        <PasswordReset v-if="showPasswordReset" @close="togglePasswordReset()"></PasswordReset>
     <section>
     <div class="col1">
         <h1>Vuegram</h1>
@@ -61,6 +63,7 @@
 </template>
 
 <script>
+    import PasswordReset from '@/components/PasswordReset'
 
     export default{
         methods: {
@@ -102,6 +105,9 @@
                 showLoginForm: true,
                 showPasswordReset: false 
             }
+        },
+        components: {
+            PasswordReset
         }
 
     }
