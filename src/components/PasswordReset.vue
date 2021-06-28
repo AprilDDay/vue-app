@@ -8,6 +8,7 @@
                  <form @submit.prevent>
                      <input v-model.trim="email" placeholder="you@email.com" />
                  </form>
+                 <p v-if="errorMsg !== ''" class="error">{{ errorMsg }}</p>
                  <button @click="resetPassword()" class="button">reset</button>
             </div>
             <p v-else>success! Check your email for a reset link.</p>
@@ -24,13 +25,21 @@ export default ({
     data(){
         return {
             email: '',
-            showSuccess: false
+            showSuccess: false,
+            errorMsg: ''
 
         }
     }, 
     methods: {
         async resetPassword(){
-            //reset logic
+            this.errorMsg = ''
+
+            try {
+                await auth.sendPassordResetEmail(this.email)
+                this.showSuccess = true
+            } catch (err) {
+                this.errorMsg = err.message
+            }
         }
     }
     //setup() {  
