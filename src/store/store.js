@@ -28,6 +28,13 @@ export default new Vuex.Store({
             commit('setUserProfile', userProfile.data())
             //change route to dashboard
             router.push('')
+        },
+        async logout({ commit }) {
+            await fb.auth.signOut()
+
+            //clear user profile and redirect to /login
+            commit('setUserProfile', {})
+            router.push('/login')
         }
     }
 })
