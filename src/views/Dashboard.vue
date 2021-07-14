@@ -3,13 +3,13 @@
         <section>
             <div class="col1">
                 <div class="profile">
-                    <h5>n</h5>
-                    <p></p>
+                    <h5>{{ userProfile.name }}</h5>
+                    <p>{{ userProfile.title }}</p>
                     <div class="create-post">
                         <p>create a post</p>
                         <form @submit.prevent>
-                            <textarea></textarea>
-                            <button class="button">post</button>
+                            <textarea v-model.trim="post-content"></textarea>
+                            <button @click="createPost()" :disabled="post.content === ''" class="button">post</button>
                         </form>
                     </div>
                 </div>
@@ -29,14 +29,20 @@
     export default{
         data() {
             return {
-
+                post: {
+                    content: ''
+                }
             }
         },
         computed: {
             ...mapState(['userProfile'])
         },
         methods: {
-            
+            createPost(){
+                this.$store.dispatch('createPost', {content: this.post.content})
+                this.post.content=''
+            }
+
         }
 
     }

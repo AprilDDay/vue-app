@@ -31,6 +31,16 @@ export default createStore({
       if (router.currentRoute.path === '/login'){
         router.push('/')
       }
+    },
+    async createPost({state, commit}, post) {
+      await fb.postsCollection.add({
+        createOn: newDate(),
+        content: post.content,
+        userId:  fb.auth.currentUser.uid,
+        userName: state.userProfile.name,
+        comments: 0,
+        likes: 0
+      })
     }
     
   },
