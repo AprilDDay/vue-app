@@ -19,6 +19,9 @@
                     <div v-for="post in posts" :key="post.id" class="post">
                         <h5>{{ post.userName }}</h5>
                         <span>{{ post.createdOn }}</span>
+                        <!-- the following two lines look like they aren't working -->
+                        <span>{{ fullPost.createdOn | formatDate }}</span>
+                        <span>{{ post.content | trimLength }}</span>
                         <p>{{ post.content }}</p>
                         <ul>
                             <li><a>comments {{ post.comments }}</a></li>
@@ -37,6 +40,7 @@
 
 <script>
 
+    import moment from 'moment'
     import { mapState } from 'vuex'
     export default{
         data() {
@@ -55,6 +59,18 @@
                 this.post.content=''
             }
 
+        },
+        filters: {
+            formatDate(val) {
+                if(!val) {return '-'}
+
+                let date = val.toDate()
+                return moment(date).fromNow()
+            },
+            trimLength(val) {
+                if(val.length < 200) {return val}
+                return `${val.substring(0, 200)}...`
+            }
         }
 
     }
