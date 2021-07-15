@@ -24,7 +24,7 @@
                         <span>{{ post.content | trimLength }}</span>
                         <p>{{ post.content }}</p>
                         <ul>
-                            <li><a>comments {{ post.comments }}</a></li>
+                            <li><a @click="toggleCommentModal(post)">comments {{ post.comments }}</a></li>
                             <li><a>likes {{ post.likes }}</a></li>
                             <li><a>view full post</a></li>
                         </ul>
