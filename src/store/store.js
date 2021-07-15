@@ -3,8 +3,15 @@ import Vuex from 'vuex'
 import * as fb from '../firebase'
 import router from '../router/index'
 
-Vue.use(Vuex)
+const store 
 
+Vue.use(Vuex)= new Vuex.Store({
+    //apps state
+})
+
+export default store
+
+/*
 export default new Vuex.Store({
     state: {
         userProfile: {}
@@ -38,3 +45,4 @@ export default new Vuex.Store({
         }
     }
 })
+*/

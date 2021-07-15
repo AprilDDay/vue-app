@@ -16,7 +16,7 @@ export default {
     SiteNav
   },
   computed: {
-    ...mapState(['userProfile']),
+    ...mapState(['userProfile', 'posts']),
     showNav() {
       return Object.keys(this.userProfile).length > 1
     }

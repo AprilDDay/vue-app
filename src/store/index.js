@@ -5,6 +5,8 @@ import * as fb from '../firebase'
 //need to put action handlers
 export default createStore({
   state: {
+    userProfile: {},
+    posts: []
   },
   method: {
     async signup({dispatch}, form) {
@@ -41,10 +43,26 @@ export default createStore({
         comments: 0,
         likes: 0
       })
-    }
+    },
+    //realtime firebase connection
+    fb.postsCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
+      let postArray = []
+
+      snapshot.forEach(doc=> {
+        let post = doc.data()
+        post.id = doc.id
+
+        postsArray.push(post)
+      })
+      store.commit('setPosts', postsArray)
+    })
     
   },
   mutations: {
+    setPosts(state, val) {
+      state.posts = val
+
+    }
   },
   actions: {
   },
