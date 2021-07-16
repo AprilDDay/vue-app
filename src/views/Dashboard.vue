@@ -1,5 +1,8 @@
 <template>
     <div id="dashboard">
+        <transition name="fade">
+            <CommentModal v-if="showCommentModal" :post="selectedPost" @close="toggleCommentModal()"></CommentModal>
+        </transition>
         <section>
             <div class="col1">
                 <div class="profile">
@@ -8,6 +11,7 @@
                     <div class="create-post">
                         <p>create a post</p>
                         <form @submit.prevent>
+                            <!-- potential problem with the following line -->
                             <textarea v-model.trim="post-content"></textarea>
                             <button @click="createPost()" :disabled="post.content === ''" class="button">post</button>
                         </form>
@@ -27,6 +31,8 @@
                             <li><a @click="toggleCommentModal(post)">comments {{ post.comments }}</a></li>
                             <li><a>likes {{ post.likes }}</a></li>
                             <li><a>view full post</a></li>
+                            <!-- not sure if the following makes sense going here -->
+                            <li><a @click="toggleCommentModal(post)">comments {{ post.comments }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -40,14 +46,19 @@
 
 <script>
 
+    import CommentModal from '@/components/CommentModal'
     import moment from 'moment'
     import { mapState } from 'vuex'
+
+    // add vue instance
     export default{
         data() {
             return {
                 post: {
                     content: ''
-                }
+                },
+                showCommentModal: false,
+                selectedPost: {}
             }
         },
         computed: {
@@ -57,6 +68,16 @@
             createPost(){
                 this.$store.dispatch('createPost', {content: this.post.content})
                 this.post.content=''
+            },
+            toggleCommentModal(post){
+                this.showCommentModal = !this.showCommentModal
+
+                //if opening modal set selectedPost, else clear
+                if(this.showCommentModal) {
+                    this.selectedPost = post
+                } else {
+                    this.selectedPost = {}
+                }
             }
 
         },
@@ -71,6 +92,9 @@
                 if(val.length < 200) {return val}
                 return `${val.substring(0, 200)}...`
             }
+        },
+        components: {
+            CommentModal
         }
 
     }
