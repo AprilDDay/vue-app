@@ -75,6 +75,7 @@
     import CommentModal from '@/components/CommentModal'
     import moment from 'moment'
     import { mapState } from 'vuex'
+    import { commentsCollection } from '@/firebase' //import firebase commentsCollection ref 
 
     // add vue instance
     export default{
@@ -84,7 +85,10 @@
                     content: ''
                 },
                 showCommentModal: false,
-                selectedPost: {}
+                selectedPost: {},
+                showPostModal: false,
+                fullPost: {},
+                postComments: []
             }
         },
         computed: {
@@ -107,6 +111,22 @@
             },
             likePost(id, likesCount){
                 this.$store.dispatch('likePost', {id, likseCount})
+            },
+            async viewPost(post){
+                const docs = await commentsCollection.where('postId', '==', post.id).get()
+
+                docs.forEach(doc => {
+                    let comment = doc.data()
+                    comment.id = doc.id
+                    this.postComments.push(comment)
+                })
+
+                this.fullPost = post
+                this.showPostModal = true
+            }, 
+            closePostModal(){
+                this.postComments = []
+                this.showPostModal = false
             }
         },
         filters: {
