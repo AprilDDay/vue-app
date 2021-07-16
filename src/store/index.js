@@ -1,3 +1,4 @@
+import { get } from 'core-js/core/dict'
 import { createStore } from 'vuex'
 import * as fb from '../firebase'
 
@@ -44,6 +45,26 @@ export default createStore({
         likes: 0
       })
     },
+    async likePost( {commit}, post) {
+      const userId = fb.auth.currentUser.uid
+      const docId = `${userId}_${post.id}`
+
+      //check if a user has liked a post
+      const doc = await fb.likesCollection.doc(docId).get()
+      if(doc.exists) { return }
+
+      //create post 
+      await fb.likesCollection.doc(docId).set({
+        postId: post.id,
+        userId: userId
+      })
+
+      //update post likes count
+      fb.postsCollection.doc(post.id).update({
+        likes: post.likesCount + 1
+      })
+    }
+    //not sure the following goes here
     //realtime firebase connection
     fb.postsCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
       let postArray = []
