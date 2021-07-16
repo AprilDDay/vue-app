@@ -63,7 +63,33 @@ export default createStore({
       fb.postsCollection.doc(post.id).update({
         likes: post.likesCount + 1
       })
-    }
+    },
+    async updateProfile({dispatch}, user) {
+      const userId = fb.auth.currentUser.uid
+      //update user object
+      const userRef = await fb.usersCollection.doc(userId).update({
+        name: user.name,
+        title: user.title
+      })
+
+      dispatch('fetchUserProfile', { uid: userId })
+
+      //update all the posts by the user
+      const postDocs = await fb.auth.postsCollection.where('userId', '==', userId).get()
+      postDocs.forEach(doc => {
+        fb.postsCollection.doc(doc.id).update({
+          userName: user.name
+        })
+      })
+
+      //update all comments by user
+      const commentDocs = await fb.commentsColection.where('userId', '==', userId).get()
+      commentDocs.forEach(doc => {
+        fb.commentsColection.doc(doc.id).update({
+          userName: user.name
+        })
+      })
+    },
     //not sure the following goes here
     //realtime firebase connection
     fb.postsCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
