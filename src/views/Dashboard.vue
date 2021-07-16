@@ -1,5 +1,6 @@
 <template>
     <div id="dashboard">
+    
         <transition name="fade">
             <CommentModal v-if="showCommentModal" :post="selectedPost" @close="toggleCommentModal()"></CommentModal>
         </transition>
@@ -30,7 +31,32 @@
                         <ul>
                             <li><a @click="toggleCommentModal(post)">comments {{ post.comments }}</a></li>
                             <li><a @click="likePost(post.id, post.likes)">likes {{ post.likes }}</a></li>
-                            <li><a>view full post</a></li>
+                            <li><a @click="viewPost(post)">view full post</a></li>
+                                    <!-- full post modal -->
+                                    <transition name="fade">
+                                        <div v-if="showPostModal" class="p-modal">
+                                            <div class="p-container">
+                                                <a @click="closePostModal()" class="close">close</a>
+                                                <div class="post">
+                                                    <h5>{{ fullPost.userName }}</h5>
+                                                    <span>{{ fullPost.createdOn }}</span>
+                                                    <p>{{ fullPost.content }}</p>
+                                                    <ul>
+                                                        <li><a>comments {{ fullPost.comments }}</a></li>
+                                                        <li><a>likes {{ fullPost.likes }}</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div v-show="postComments.length" class="comments">
+                                                    <div v-for="comment in postComments" :key="comment.id" class="comment">
+                                                        <p>{{ comment.userName }}</p>
+                                                        <span>{{ comment.createdOn | formatDate }}</span>
+                                                        <p>{{ comment.content }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </transition>
+                                    <!-- end full post modal -->
                             <!-- not sure if the following makes sense going here -->
                             <li><a @click="toggleCommentModal(post)">comments {{ post.comments }}</a></li>
                         </ul>
